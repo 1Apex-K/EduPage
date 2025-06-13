@@ -37,354 +37,155 @@ body.dark {
   top: 1rem;
   left: 1rem;
   cursor: pointer;
-  font-size: 2.5rem;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: auto;
-  border-radius: 0;
-  background-color: transparent;
-  box-shadow: none;
-  transition: transform 0.3s ease-out;
+  font-size: 2rem;
+  z-index: 10;
+  transition: transform 0.3s ease;
 }
 
-.theme-toggle:active {
-  transform: scale(0.8) rotate(360deg);
+.theme-toggle:hover {
+  transform: scale(1.1);
 }
 
 /* --------------------------------------------------- */
-/* تنسيقات صفحات تسجيل الدخول (index, register, forgot-password) */
+/* تنسيقات صفحات تسجيل الدخول وإنشاء حساب ونسيت كلمة المرور */
 /* --------------------------------------------------- */
 .login-container {
-  max-width: 400px;
+  max-width: 450px;
   margin: 100px auto;
   background: rgba(255, 255, 255, 0.05);
-  padding: 2rem;
+  padding: 3rem;
   border-radius: 20px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   text-align: center;
   backdrop-filter: blur(10px);
   transition: background 0.6s ease, box-shadow 0.6s ease;
-  position: relative;
-  z-index: 1; /* لضمان ظهورها فوق الخلفية المتحركة */
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* لتحديد موقع الأجزاء الداخلية */
+  z-index: 1; /* لضمان ظهورها فوق الخلفية */
+}
+
+/* لكي تكون الحاوية شفافة في الوضع النهاري أيضًا */
+body.light .login-container {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .login-container h1 {
-  font-size: 2.2rem;
-  margin-bottom: 1.5rem;
-  color: inherit;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: inherit; /* ليتغير لون العنوان مع الثيم */
 }
 
-/* الحقول (input, select) */
-input, select {
-  width: 100%;
-  padding: 12px 14px;
-  margin: 12px 0;
-  border: 2px solid transparent;
-  border-radius: 12px;
-  font-size: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: inherit;
-  transition: all 0.4s ease;
-  backdrop-filter: blur(4px);
-  box-sizing: border-box;
-  font-family: 'Cairo', sans-serif;
-  text-align: right;
-}
-
-input:focus, select:focus {
-  outline: none;
-  border-color: #ffdd00;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-body.dark input, body.dark select {
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffdd00;
-}
-
-body.dark input:focus, body.dark select:focus {
-  border-color: #ffdd00;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* زر الدخول/إنشاء الحساب */
-button {
-  width: 100%;
-  padding: 14px;
-  background-color: #ffdd00;
-  color: #111;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.4s ease;
-  font-family: 'Cairo', sans-serif;
-}
-
-button:hover {
-  background-color: #e6c800;
-}
-
-/* مجموعة الإدخال (مع الليبل المتحرك) */
 .input-group {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
-.input-group input {
-  padding: 14px 12px 14px 12px;
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: inherit; /* ليتغير لون النص مع الثيم */
+  font-size: 1.1rem;
+  outline: none;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  box-sizing: border-box; /* لضمان أن العرض يشمل البادينغ والحدود */
+}
+
+/* تنسيق حقول الإدخال في الوضع النهاري */
+body.light .input-group input,
+body.light .input-group select {
+  background: #f0f0f0;
+  border-color: #ccc;
+  color: #333;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #007bff;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+body.light .input-group input:focus,
+body.light .input-group select:focus {
+  background-color: #e0e0e0;
 }
 
 .input-group label {
   position: absolute;
-  top: 14px;
-  right: 12px;
-  font-size: 16px;
-  color: #aaa;
+  top: 12px;
+  right: 15px; /* لضبط موضع التسمية في التصميم العربي */
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
   pointer-events: none;
-  transition: 0.3s ease;
-  font-family: 'Cairo', sans-serif;
+  transition: all 0.3s ease;
+}
+
+/* تنسيق التسميات في الوضع النهاري */
+body.light .input-group label {
+  color: #666;
 }
 
 .input-group input:focus + label,
-.input-group input:not(:placeholder-shown):valid + label {
-  top: -10px;
-  right: 8px;
-  font-size: 13px;
-  color: #ffdd00;
-  background-color: transparent;
+.input-group input:not(:placeholder-shown) + label,
+.input-group select:focus + label,
+.input-group select:not([value=""]) + label { /* لضبط السيلكت */
+  top: -20px;
+  font-size: 0.9rem;
+  color: #007bff;
 }
 
-/* الروابط داخل login-container */
+/* أزرار الإرسال */
+button[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1rem;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* تنسيق رسائل الخطأ/النجاح */
+.message {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* روابط أسفل الفورم */
 .login-container p {
-  margin-top: 15px;
-  margin-bottom: 15px;
-  color: inherit;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: inherit; /* ليتغير لون النص مع الثيم */
 }
 
 .login-container p a {
-  color: #88ccff;
+  color: #007bff;
   text-decoration: none;
+  font-weight: bold;
   transition: color 0.3s ease;
 }
 
 .login-container p a:hover {
-  color: #66b3ff;
+  color: #0056b3;
   text-decoration: underline;
-}
-
-body.dark .login-container p a {
-  color: #88ccff;
-}
-
-body.dark .login-container p a:hover {
-  color: #66b3ff;
-}
-
-/* --------------------------------------------------- */
-/* تنسيقات الصفحة الرئيسية الجديدة (main-page.html) */
-/* --------------------------------------------------- */
-.main-page-wrapper {
-  display: flex;
-  min-height: 100vh;
-  width: 100vw;
-  position: relative;
-  z-index: 0;
-}
-
-/* الجزء الأيسر للمحتوى */
-.content-left {
-  flex: 1;
-  padding: 3rem 4rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  text-align: right;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 0;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.6s ease, color 0.6s ease;
-  z-index: 1;
-}
-
-body.dark .content-left {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.content-left .header-section {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 3rem;
-}
-
-.content-left .header-logo {
-  max-width: 180px;
-  height: auto;
-  filter: brightness(1.2);
-}
-
-body.dark .content-left .header-logo {
-  filter: brightness(0.8) invert(1) saturate(1.5);
-}
-
-.content-left .top-buttons {
-  display: flex;
-  gap: 15px;
-}
-
-.content-left .top-btn {
-  padding: 12px 25px;
-  border-radius: 30px;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.content-left .top-btn.login-btn {
-  background-color: #f0f0f0;
-  color: #333;
-}
-.content-left .top-btn.login-btn:hover {
-  background-color: #e0e0e0;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.content-left .top-btn.register-btn {
-  background-color: #ff5252;
-  color: #fff;
-  box-shadow: 0 4px 8px rgba(255, 82, 82, 0.4);
-}
-.content-left .top-btn.register-btn:hover {
-  background-color: #e04040;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(255, 82, 82, 0.6);
-}
-
-.content-left .btn-icon {
-  font-size: 1.2em;
-}
-
-.content-left .hero-section {
-  text-align: right;
-  margin-bottom: auto;
-}
-
-.content-left .hero-title {
-  font-size: 4rem;
-  color: inherit;
-  margin-bottom: 1rem;
-  line-height: 1.2;
-}
-
-.content-left .hero-subtitle {
-  font-size: 2.2rem;
-  color: inherit;
-  margin-bottom: 3rem;
-  opacity: 0.9;
-}
-
-/* تنسيقات النص المتحرك (Typing Effect) */
-.hero-section .dynamic-text {
-  border-right: 2px solid; /* مؤشر الكتابة (الكيرسير) */
-  animation: blink-caret 0.75s step-end infinite; /* انيميشن وميض المؤشر */
-  display: inline-block; /* لضمان ظهور المؤشر بشكل صحيح */
-}
-
-/* انيميشن وميض مؤشر الكتابة */
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: inherit; } /* المؤشر يرث لون النص */
-}
-
-
-.content-left .action-btn {
-  width: auto;
-  padding: 18px 40px;
-  background-color: #00e676;
-  color: #fff;
-  border-radius: 50px;
-  font-size: 1.4rem;
-  font-weight: bold;
-  box-shadow: 0 5px 15px rgba(0, 230, 118, 0.4);
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.content-left .action-btn:hover {
-  background-color: #00c853;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 230, 118, 0.6);
-}
-
-.content-left .footer-info {
-  margin-top: auto;
-  color: inherit;
-  font-size: 0.95rem;
-  opacity: 0.7;
-  text-align: right;
-  width: 100%;
-  padding-top: 2rem;
-}
-
-/* --------------------------------------------------- */
-/* الجزء الأيمن لمنطقة الانيميشن */
-/* --------------------------------------------------- */
-.animation-right {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: linear-gradient(to bottom right, #ffdd00, #ff8c00);
-  border-radius: 0;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-}
-
-body.dark .animation-right {
-  background-image: linear-gradient(to bottom right, #ff8c00, #ffdd00);
-}
-
-/* حاوية الطائرة المتحركة */
-#plane-particles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 10;
-}
-
-/* نص "الأسطورة" كـ overlay */
-.side-overlay-text {
-  position: absolute;
-  font-size: 9rem;
-  font-weight: bold;
-  color: rgba(255, 255, 255, 0.1);
-  z-index: 2;
-  user-select: none;
-  white-space: nowrap;
-  transform: rotate(-10deg);
-  right: 10%;
-  top: 45%;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-body.dark .side-overlay-text {
-  color: rgba(255, 255, 255, 0.08);
 }
 
 /* --------------------------------------------------- */
@@ -409,6 +210,11 @@ body.dark .side-overlay-text {
   z-index: 1;
 }
 
+body.light .home-container {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
 .home-container h1 {
   font-size: 2.2rem;
   color: inherit;
@@ -425,36 +231,413 @@ body.dark .side-overlay-text {
 .home-container .welcome-img {
   max-width: 200px;
   height: auto;
-  margin-bottom: 2.5rem;
-  opacity: 0.9;
-  transition: opacity 0.5s ease;
-}
-
-.logout-btn {
-  width: 80%;
-  padding: 14px;
-  background-color: #ffdd00;
-  color: #111;
-  border: none;
+  margin-bottom: 2rem;
   border-radius: 10px;
-  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.home-container .logout-btn {
+  padding: 12px 25px;
+  background-color: #dc3545; /* لون أحمر لزر تسجيل الخروج */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.4s ease;
-  font-family: 'Cairo', sans-serif;
-  text-decoration: none;
-  display: block;
-  margin-top: auto;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.logout-btn:hover {
-  background-color: #e6c800;
+.home-container .logout-btn:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
 }
 
-body.dark .home-container h1,
-body.dark .home-container p {
+/* --------------------------------------------------- */
+/* تنسيقات main-page.html و index.html (الصفحة الرئيسية) */
+/* --------------------------------------------------- */
+.main-page-wrapper {
+  display: flex;
+  flex-direction: row; /* العناصر جنبًا إلى جنب */
+  min-height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* لكي تكون الخلفية شفافة للوضع النهاري أيضا */
+body.light .main-page-wrapper {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #111111;
+}
+
+body.dark .main-page-wrapper {
+  background-color: rgba(13, 13, 13, 0.7);
   color: #ffdd00;
 }
 
-body.dark .home-container .welcome-img {
-  filter: brightness(0.8) contrast(1.2);
+.content-left {
+  flex: 1; /* يأخذ المساحة المتاحة */
+  display: flex;
+  flex-direction: column;
+  padding-left: 2rem; /* مسافة داخلية لليسار */
+  padding-right: 1rem; /* مسافة داخلية لليمين */
+}
+
+.content-right {
+  flex: 1; /* يأخذ المساحة المتاحة */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* لتحديد موقع الجسيمات */
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4rem; /* مسافة أكبر أسفل الهيدر */
+  width: 100%;
+}
+
+.header-logo {
+  max-width: 180px; /* حجم أكبر للوجو */
+  height: auto;
+  border-radius: 10px; /* حواف دائرية للوجو */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.top-buttons {
+  display: flex;
+  gap: 1rem; /* مسافة بين الأزرار */
+}
+
+.top-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px; /* أزرار دائرية أكثر */
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* مسافة بين الأيقونة والنص */
+}
+
+/* أزرار تسجيل الدخول/الخروج */
+.top-btn.login-btn {
+  background-color: #28a745; /* أخضر */
+  color: white;
+}
+
+.top-btn.login-btn:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.top-btn.logout-btn {
+  background-color: #dc3545; /* أحمر */
+  color: white;
+}
+
+.top-btn.logout-btn:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}
+
+/* زر "أنشئ حسابك" */
+.top-btn.register-btn {
+  background-color: #007bff; /* أزرق */
+  color: white;
+}
+
+.top-btn.register-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 5rem; /* مسافة أكبر أسفل قسم الهيرو */
+  padding: 0 2rem; /* بادينغ داخلي */
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.hero-title .highlight {
+  color: #007bff; /* لون مميز للجزء المحدد */
+  font-weight: bold;
+}
+
+body.dark .hero-title .highlight {
+  color: #88ccff; /* لون فاتح في الوضع الليلي */
+}
+
+.hero-subtitle {
+  font-size: 1.8rem;
+  color: inherit;
+  margin-bottom: 2rem;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  color: inherit;
+  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto 3rem auto;
+}
+
+.action-btn {
+  padding: 15px 30px;
+  background-color: #ffc107; /* لون أصفر جذاب */
+  color: #333;
+  border: none;
+  border-radius: 30px; /* زر دائري أكثر */
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+}
+
+.action-btn:hover {
+  background-color: #e0a800;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.6);
+}
+
+.features-section {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem; /* مسافة بين الكروت */
+  margin-top: 3rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2.5rem;
+  border-radius: 15px;
+  text-align: center;
+  flex: 1 1 calc(33% - 4rem); /* 3 كروت في الصف مع مسافة */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  min-width: 280px; /* لضمان عدم تصغير الكروت كثيرًا */
+}
+
+body.light .feature-card {
+  background: rgba(240, 240, 240, 0.8);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block; /* لجعل الأيقونة في سطر منفصل */
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: inherit;
+}
+
+.feature-card p {
+  font-size: 1rem;
+  color: inherit;
+  line-height: 1.5;
+}
+
+#plane-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1; /* لضمان أنها خلف الصورة */
+}
+
+.content-right img {
+  max-width: 80%; /* حجم الصورة */
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* تنسيقات النصوص المتحركة */
+.dynamic-text {
+  color: #ffc107; /* لون الأسطورة */
+  font-weight: bold;
+}
+
+body.dark .dynamic-text {
+  color: #ffdd00;
+}
+
+/* --------------------------------------------------- */
+/* الاستجابة لتناسب الشاشات المختلفة */
+/* --------------------------------------------------- */
+@media (max-width: 1024px) {
+  .main-page-wrapper {
+    flex-direction: column; /* الأقسام فوق بعضها في الشاشات الصغيرة */
+    padding: 1.5rem;
+  }
+
+  .content-left,
+  .content-right {
+    padding: 0; /* إزالة البادينغ الأفقي */
+  }
+
+  .header-section {
+    flex-direction: column; /* الأزرار واللوجو فوق بعض */
+    margin-bottom: 2rem;
+  }
+
+  .top-buttons {
+    margin-top: 1rem;
+  }
+
+  .hero-section {
+    margin-bottom: 3rem;
+  }
+
+  .hero-title {
+    font-size: 2.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .hero-description {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .features-section {
+    flex-direction: column; /* كروت الميزات فوق بعضها */
+    align-items: center;
+  }
+
+  .feature-card {
+    flex: 1 1 90%; /* كل كارت يأخذ عرضًا أكبر */
+    max-width: 400px; /* لضمان عدم التمدد بشكل مفرط */
+  }
+
+  .content-right img {
+    max-width: 90%; /* حجم الصورة على الشاشات الصغيرة */
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    margin: 50px auto;
+    padding: 2rem;
+  }
+
+  .login-container h1 {
+    font-size: 2rem;
+  }
+
+  .input-group input,
+  .input-group select {
+    font-size: 1rem;
+  }
+
+  .input-group label {
+    font-size: 1rem;
+  }
+
+  button[type="submit"],
+  .action-btn,
+  .home-container .logout-btn {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem;
+    margin: 30px auto;
+  }
+
+  .login-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .theme-toggle {
+    font-size: 1.5rem;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+
+  .header-logo {
+    max-width: 120px;
+  }
+
+  .top-btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    gap: 0.3rem;
+  }
+
+  .btn-icon {
+    font-size: 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .hero-description {
+    font-size: 0.9rem;
+  }
+
+  .action-btn {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+  }
+
+  .feature-card {
+    padding: 1.5rem;
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .feature-card p {
+    font-size: 0.9rem;
+  }
 }

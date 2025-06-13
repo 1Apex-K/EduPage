@@ -1,11 +1,3 @@
-// public/js/script.js
-
-// 🚨 هام جداً: هذا الرابط سيتم تحديثه تلقائياً بواسطة Vercel/Netlify.
-// عند التطوير المحلي، يمكنك استخدام '/api' إذا كنت تستخدم Vercel Dev.
-// عند النشر، سيكون مسار الـ API هو '/api/'.
-const backendBaseUrl = ''; // اتركه فارغاً عند النشر، Vercel ستقوم بتوجيه الطلبات لـ /api تلقائياً.
-                           // لو محلياً، يمكن أن يكون 'http://localhost:3000' لو بتستخدم vercel dev أو 'http://localhost:5000' لو شغلت server.js لوحده.
-
 // الوظائف المتعلقة بتغيير الثيم (الوضع الليلي/النهاري)
 function setTheme(mode) {
   document.body.className = mode;
@@ -29,433 +21,443 @@ function setTheme(mode) {
 
 // تبديل الثيم بين الوضع الليلي والنهاري
 function toggleTheme() {
-  const currentTheme = localStorage.getItem('theme') || 'dark'; // الوضع الافتراضي ليلى
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  setTheme(newTheme);
+  const currentTheme = localStorage.getItem('theme') || 'dark';
+  setTheme(currentTheme === 'dark' ? 'light' : 'dark');
 }
 
-// تطبيق الثيم المحفوظ عند تحميل الصفحة
+// تطبيق الثيم المفضل عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    setTheme(savedTheme);
-  } else {
-    // إذا لم يكن هناك ثيم محفوظ، استخدم الوضع الليلي كافتراضي
-    setTheme('dark');
-  }
+  setTheme(localStorage.getItem('theme') || 'dark'); // الافتراضي هو الوضع الليلي
+});
 
-  // تهيئة tsParticles للخلفية العامة (الحروف العربية)
-  tsParticles.load({
-    id: "particles-background",
-    options: {
-      particles: {
-        number: {
-          value: 100,
-          density: {
-            enable: true,
-            value_area: 800
-          }
+// إعداد جسيمات tsParticles للخلفية العامة
+tsParticles.load({
+  id: "particles-background",
+  options: {
+    background: {
+      color: {
+        value: "transparent", // الخلفية الشفافة للجسيمات
+      },
+    },
+    fpsLimit: 60,
+    interactivity: {
+      events: {
+        onClick: {
+          enable: true,
+          mode: "push",
         },
+        onHover: {
+          enable: true,
+          mode: "repulse",
+        },
+      },
+      modes: {
+        push: {
+          quantity: 4,
+        },
+        repulse: {
+          distance: 100,
+          duration: 0.4,
+        },
+      },
+    },
+    particles: {
+      color: {
+        value: localStorage.getItem('theme') === 'dark' ? "#ffdd00" : "#88ccff", // لون الحروف (يتغير مع الثيم)
+      },
+      links: {
         color: {
-          value: "#ffdd00" // لون مبدئي، سيتغير بناءً على الثيم
+          value: localStorage.getItem('theme') === 'dark' ? "#88ccff" : "#007bff", // لون الخطوط (يتغير مع الثيم)
         },
+        distance: 150,
+        enable: true,
+        opacity: 0.5,
+        width: 1,
+      },
+      move: {
+        direction: "none",
+        enable: true,
+        outModes: {
+          default: "bounce",
+        },
+        random: false,
+        speed: 2,
+        straight: false,
+      },
+      number: {
+        density: {
+          enable: true,
+          area: 800,
+        },
+        value: 80,
+      },
+      opacity: {
+        value: 0.5,
+      },
+      shape: {
+        type: "character", // لجعل الجسيمات تظهر كحروف
+        character: {
+          value: ["أ", "ل", "أ", "س", "ط", "و", "ر", "ة"], // الحروف التي ستظهر
+          font: "Cairo", // الخط المستخدم للحروف
+          style: "normal",
+          weight: "700" // وزن الخط
+        }
+      },
+      size: {
+        value: {
+          min: 10,
+          max: 20
+        },
+      },
+    },
+    detectRetina: true,
+  },
+});
+
+// إعداد جسيمات tsParticles للطائرة المتحركة (إذا كانت موجودة في main-page.html)
+tsParticles.load({
+  id: "plane-particles",
+  options: {
+    fullScreen: { enable: false }, // مهم: لا تجعلها تملأ الشاشة
+    background: {
+      color: {
+        value: "transparent",
+      },
+    },
+    particles: {
+      number: {
+        value: 0, // لا يوجد جسيمات ثابتة، سنضيفها يدويا
+      },
+      color: {
+        value: "#ffffff", // لون الجسيمات
+      },
+      shape: {
+        type: "circle",
+      },
+      opacity: {
+        value: 0.8,
+        random: true,
+      },
+      size: {
+        value: 3,
+        random: true,
+      },
+      move: {
+        enable: true,
+        speed: 3,
+        direction: "right", // تتحرك لليمين
+        random: false,
+        straight: false,
+        outModes: {
+          default: "out",
+        },
+        attract: {
+          enable: false,
+          rotateX: 600,
+          rotateY: 1200,
+        },
+      },
+    },
+    interactivity: {
+      events: {
+        onHover: {
+          enable: false, // لا تتفاعل عند التحويم
+        },
+        onClick: {
+          enable: false, // لا تتفاعل عند النقر
+        },
+      },
+    },
+    // تحديد جسيم واحد يمثل الطائرة
+    emitters: [{
+      direction: "none", // لا يوجد اتجاه محدد للمصدر
+      rate: {
+        quantity: 1, // جسيم واحد فقط
+        delay: 0.1, // تأخير بسيط
+      },
+      life: {
+        count: 0, // لا تموت تلقائيا
+        duration: {
+          value: 0 // لا يوجد مدة حياة محددة، ستبقى
+        },
+      },
+      position: { // موضع البداية (من اليسار)
+        x: 0,
+        y: 50, // في منتصف الشاشة تقريبا
+      },
+      particles: {
         shape: {
-          type: "char", // نوع الجسيمات هو حروف
-          character: [
-            {
-              value: ["ا", "ل", "أ", "س", "ط", "و", "ر", "ة"], // الحروف العربية
-              font: "Cairo",
-              style: "",
-              weight: "400"
-            }
-          ]
-        },
-        opacity: {
-          value: 0.5,
-          random: false,
-          anim: {
-            enable: false
-          }
+          type: "image", // استخدم صورة
+          image: {
+            src: "https://www.freeiconspng.com/uploads/airplane-png-icon-10.png", // رابط صورة الطائرة
+            width: 100,
+            height: 100,
+          },
         },
         size: {
-          value: 16,
-          random: true,
-          anim: {
-            enable: false
-          }
-        },
-        links: {
-          enable: true,
-          distance: 150,
-          color: "#88ccff", // لون مبدئي، سيتغير بناءً على الثيم
-          opacity: 0.4,
-          width: 1
+          value: 50, // حجم الطائرة
         },
         move: {
-          enable: true,
-          speed: 1,
-          direction: "none",
-          random: true,
-          straight: false,
-          out_mode: "out",
-          bounce: false,
-          attract: {
-            enable: false,
-            rotateX: 600,
-            rotateY: 1200
-          }
-        }
+          speed: 5, // سرعة حركة الطائرة
+          direction: "right", // اتجاه حركة الطائرة
+          random: false,
+          straight: true, // تتحرك في خط مستقيم
+          outModes: {
+            default: "destroy", // تدمر عند الخروج من الشاشة
+          },
+        },
       },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: {
-            enable: true,
-            mode: "grab"
-          },
-          onclick: {
-            enable: true,
-            mode: "push"
-          },
-          resize: true
-        },
-        modes: {
-          grab: {
-            distance: 140,
-            line_linked: {
-              opacity: 1
+    }],
+  },
+});
+
+
+// تأثير الكتابة الديناميكي
+const dynamicTextElement = document.getElementById('dynamic-text');
+const texts = ["بيتك ومطرحك", "مستقبلك يبدأ هنا", "طريقك للتميز"];
+let textIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typingSpeed = 150;
+let deletingSpeed = 70;
+let delayBetweenTexts = 1500;
+
+function typeEffect() {
+  const currentText = texts[textIndex];
+  if (isDeleting) {
+    dynamicTextElement.textContent = currentText.substring(0, charIndex - 1);
+    charIndex--;
+  } else {
+    dynamicTextElement.textContent = currentText.substring(0, charIndex + 1);
+    charIndex++;
+  }
+
+  if (!isDeleting && charIndex === currentText.length) {
+    typingSpeed = delayBetweenTexts;
+    isDeleting = true;
+  } else if (isDeleting && charIndex === 0) {
+    isDeleting = false;
+    textIndex = (textIndex + 1) % texts.length;
+    typingSpeed = 150;
+  } else {
+    typingSpeed = isDeleting ? deletingSpeed : 150;
+  }
+  setTimeout(typeEffect, typingSpeed);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    typeEffect(); // بدء تأثير الكتابة عند تحميل الصفحة
+
+    // 🚨 هام جداً: هذا الرابط سيتم تحديثه تلقائياً بواسطة Vercel.
+    // عند التطوير المحلي، يمكنك استخدام '/api' إذا كنت تستخدم Vercel Dev.
+    // عند النشر، سيكون مسار الـ API هو '/api/'.
+    const backendBaseUrl = '';
+
+    // --- ربط نماذج HTML بـ Backend API ---
+
+    // 1. التعامل مع نموذج التسجيل (register.html)
+    const registerForm = document.getElementById('registerForm');
+    const registerMessageDiv = registerForm ? registerForm.querySelector('#message') : null;
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const parentPhoneNumber = document.getElementById('parentPhoneNumber').value;
+            const governorate = document.getElementById('governorate').value;
+            const grade = document.getElementById('grade').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // تحقق بسيط من تطابق كلمات المرور في الواجهة الأمامية
+            if (password !== confirmPassword) {
+                if (registerMessageDiv) {
+                    registerMessageDiv.textContent = 'كلمة المرور وتأكيد كلمة المرور غير متطابقين.';
+                    registerMessageDiv.style.color = 'red';
+                }
+                return;
             }
-          },
-          bubble: {
-            distance: 400,
-            size: 40,
-            duration: 2,
-            opacity: 8,
-            speed: 3
-          },
-          repulse: {
-            distance: 200,
-            duration: 0.4
-          },
-          push: {
-            particles_nb: 4
-          },
-          remove: {
-            particles_nb: 2
-          }
+
+            try {
+                const response = await fetch(`${backendBaseUrl}/api/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        first_name: firstName,
+                        last_name: lastName,
+                        phone_number: phoneNumber,
+                        parent_phone_number: parentPhoneNumber,
+                        governorate: governorate,
+                        grade: grade,
+                        password: password
+                    }) // لا ترسل confirm_password إلى الـ backend
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (registerMessageDiv) {
+                        registerMessageDiv.textContent = data.message;
+                        registerMessageDiv.style.color = 'green';
+                    }
+                    // 🚨 بعد التسجيل بنجاح، التوجيه لصفحة تسجيل الدخول (login.html)
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    if (registerMessageDiv) {
+                        registerMessageDiv.textContent = data.message || 'حدث خطأ غير معروف أثناء التسجيل.';
+                        registerMessageDiv.style.color = 'red';
+                    }
+                }
+            } catch (error) {
+                console.error('Error during fetch:', error);
+                if (registerMessageDiv) {
+                    registerMessageDiv.textContent = 'فشل الاتصال بالخادم. الرجاء التأكد من تشغيله.';
+                    registerMessageDiv.style.color = 'red';
+                }
+            }
+        });
+    }
+
+    // 2. التعامل مع نموذج تسجيل الدخول (login.html)
+    const loginForm = document.getElementById('loginForm');
+    const loginMessageDiv = loginForm ? loginForm.querySelector('#message') : null;
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch(`${backendBaseUrl}/api/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phone_number: phoneNumber,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (loginMessageDiv) {
+                        loginMessageDiv.textContent = data.message;
+                        loginMessageDiv.style.color = 'green';
+                    }
+                    localStorage.setItem('userToken', data.token);
+                    localStorage.setItem('userName', data.user.first_name); // حفظ الاسم
+                    setTimeout(() => {
+                        window.location.href = 'home.html'; // التوجيه للصفحة الرئيسية بعد تسجيل الدخول
+                    }, 1000);
+                } else {
+                    if (loginMessageDiv) {
+                        loginMessageDiv.textContent = data.message || 'رقم الهاتف أو كلمة المرور غير صحيحة.';
+                        loginMessageDiv.style.color = 'red';
+                    }
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+                if (loginMessageDiv) {
+                    loginMessageDiv.textContent = 'فشل الاتصال بالخادم. الرجاء التأكد من تشغيله.';
+                    loginMessageDiv.style.color = 'red';
+                }
+            }
+        });
+    }
+
+    // 3. وظيفة تسجيل الخروج (تُستخدم في home.html وزر تسجيل الخروج في index.html)
+    window.logout = function() { // جعلها global لتكون متاحة من HTML
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userName');
+        // 🚨 بعد تسجيل الخروج، التوجيه لصفحة تسجيل الدخول (login.html)
+        window.location.href = 'login.html';
+    };
+
+    // 4. التحقق من المصادقة عند تحميل الصفحات المحمية
+    // (فقط home.html هي المحمية، index.html/main-page.html لم تعد تتطلب مصادقة لكونها landing)
+    async function checkAuthentication() {
+        const token = localStorage.getItem('userToken');
+        if (!token) {
+            // 🚨 إذا لم يكن هناك توكن، أعد التوجيه لصفحة تسجيل الدخول (login.html)
+            window.location.href = 'login.html';
+            return false;
         }
-      },
-      retina_detect: true,
-      background: {
-        color: "transparent" // الخلفية ستكون من الـ body
-      }
+
+        try {
+            const response = await fetch(`${backendBaseUrl}/api/protected`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                // إذا كان التوكن غير صالح أو منتهي الصلاحية، قم بتسجيل الخروج
+                logout();
+                return false;
+            }
+            return true;
+
+        } catch (error) {
+            console.error('Error checking authentication:', error);
+            logout(); // في حالة وجود خطأ بالاتصال، قم بتسجيل الخروج
+            return false;
+        }
     }
-  });
 
+    // تشغيل التحقق عند تحميل الصفحات المحمية
+    const currentPath = window.location.pathname;
+    const protectedPages = ['/home.html']; // فقط home.html هي المحمية الآن
 
-  // تهيئة tsParticles للطائرة المتحركة (إذا كانت موجودة في main-page.html)
-  const planeParticlesDiv = document.getElementById('plane-particles');
-  if (planeParticlesDiv) {
-    tsParticles.load({
-      id: "plane-particles",
-      options: {
-        particles: {
-          number: {
-            value: 1, // جسيم واحد يمثل الطائرة
-            density: {
-              enable: false
+    if (protectedPages.some(page => currentPath.endsWith(page))) {
+        checkAuthentication();
+
+        // تحديث الاسم في صفحة home.html
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        if (userNameDisplay) {
+            const userName = localStorage.getItem('userName');
+            if (userName) {
+                userNameDisplay.textContent = `أهلاً بك, ${userName}!`;
+            } else {
+                // في حال عدم وجود اسم، أعد التوجيه لصفحة تسجيل الدخول
+                window.location.href = 'login.html';
             }
-          },
-          color: {
-            value: "#ff4500" // لون الطائرة
-          },
-          shape: {
-            type: "image",
-            image: {
-              src: "https://www.freeiconspng.com/uploads/airplane-png-picture-25.png", // رابط صورة الطائرة
-              width: 100,
-              height: 100
-            }
-          },
-          opacity: {
-            value: 1,
-            random: false,
-            anim: {
-              enable: false
-            }
-          },
-          size: {
-            value: 50, // حجم الطائرة
-            random: false,
-            anim: {
-              enable: false
-            }
-          },
-          move: {
-            enable: true,
-            speed: 2, // سرعة الطائرة
-            direction: "right", // اتجاه الحركة
-            random: false,
-            straight: true,
-            out_mode: "bounce", // تعود عندما تصل للنهاية
-            bounce: false,
-            attract: {
-              enable: false
-            }
-          }
-        },
-        interactivity: {
-          detect_on: "canvas",
-          events: {
-            onhover: {
-              enable: false
-            },
-            onclick: {
-              enable: false
-            },
-            resize: false
-          }
-        },
-        retina_detect: false
-      }
-    });
-  }
-
-  // لتشغيل تأثير الكتابة الديناميكي في main-page.html
-  const dynamicTextElement = document.getElementById('dynamic-text');
-  if (dynamicTextElement) {
-    const phrases = [
-      "بوابتك للمستقبل 🎓",
-      "معك خطوة بخطوة 🚀",
-      "خطوتك الأولى نحو التميز ✨",
-      "الأساس المتين لنجاحك 📚"
-    ];
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typingSpeed = 100; // سرعة الكتابة (أقل يعني أسرع)
-    let deletingSpeed = 50; // سرعة المسح
-    let pauseBeforeDeleting = 1500; // وقت التوقف قبل المسح (بالمللي ثانية)
-    let pauseBeforeTyping = 700; // وقت التوقف قبل الكتابة التالية
-
-    function typeEffect() {
-      const currentPhrase = phrases[phraseIndex];
-      if (isDeleting) {
-        // حذف الحروف
-        dynamicTextElement.textContent = currentPhrase.substring(0, charIndex - 1);
-        charIndex--;
-      } else {
-        // كتابة الحروف
-        dynamicTextElement.textContent = currentPhrase.substring(0, charIndex + 1);
-        charIndex++;
-      }
-
-      let currentTypingSpeed = isDeleting ? deletingSpeed : typingSpeed;
-
-      if (!isDeleting && charIndex === currentPhrase.length) {
-        // تم الانتهاء من كتابة الجملة، توقف ثم ابدأ المسح
-        currentTypingSpeed = pauseBeforeDeleting;
-        isDeleting = true;
-      } else if (isDeleting && charIndex === 0) {
-        // تم الانتهاء من مسح الجملة، توقف ثم ابدأ كتابة الجملة التالية
-        isDeleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length; // الانتقال للجملة التالية
-        currentTypingSpeed = pauseBeforeTyping;
-      }
-
-      setTimeout(typeEffect, currentTypingSpeed);
+        }
     }
-    typeEffect(); // بدء التأثير
-  }
 
-  // --- ربط نماذج HTML بـ Backend API ---
+    // 5. تحديث زر تسجيل الدخول/الخروج في index.html (صفحة الهبوط)
+    const authButton = document.getElementById('authButton');
+    const registerButton = document.querySelector('.top-btn.register-btn'); // زر "أنشئ حسابك"
 
-  // 1. التعامل مع نموذج التسجيل (register.html)
-  const registerForm = document.getElementById('registerForm');
-  const registerMessageDiv = registerForm ? registerForm.querySelector('#message') : null;
-
-  if (registerForm) {
-      registerForm.addEventListener('submit', async (e) => {
-          e.preventDefault(); // منع الإرسال الافتراضي للصفحة
-
-          const firstName = document.getElementById('firstName').value;
-          const lastName = document.getElementById('lastName').value;
-          const phoneNumber = document.getElementById('phoneNumber').value;
-          const parentPhoneNumber = document.getElementById('parentPhoneNumber').value;
-          const governorate = document.getElementById('governorate').value;
-          const grade = document.getElementById('grade').value;
-          const password = document.getElementById('password').value;
-          const confirmPassword = document.getElementById('confirmPassword').value;
-
-          try {
-              // 🚨 هنا تم تحديث المسار ليشير إلى Vercel Serverless Function
-              const response = await fetch(`${backendBaseUrl}/api/register`, {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                      first_name: firstName,
-                      last_name: lastName,
-                      phone_number: phoneNumber,
-                      parent_phone_number: parentPhoneNumber,
-                      governorate: governorate,
-                      grade: grade,
-                      password: password,
-                      confirm_password: confirmPassword
-                  })
-              });
-
-              const data = await response.json(); // تحليل الرد كـ JSON
-
-              if (response.ok) { // إذا كان الرد ناجحًا (حالة 2xx)
-                  registerMessageDiv.textContent = data.message;
-                  registerMessageDiv.style.color = 'green'; // لون أخضر للنجاح
-                  // يمكنك هنا توجيه المستخدم إلى صفحة تسجيل الدخول أو الصفحة الرئيسية
-                  setTimeout(() => {
-                      window.location.href = 'index.html'; // أو main-page.html بعد تسجيل الدخول
-                  }, 2000); // الانتقال بعد ثانيتين
-              } else { // إذا كان الرد خطأ (حالة 4xx أو 5xx)
-                  registerMessageDiv.textContent = data.message || 'حدث خطأ غير معروف أثناء التسجيل.';
-                  registerMessageDiv.style.color = 'red'; // لون أحمر للخطأ
-              }
-          } catch (error) {
-              console.error('Error during fetch:', error);
-              registerMessageDiv.textContent = 'فشل الاتصال بالخادم. الرجاء التأكد من تشغيله.';
-              registerMessageDiv.style.color = 'red';
-          }
-      });
-  }
-
-  // 2. التعامل مع نموذج تسجيل الدخول (index.html)
-  const loginForm = document.getElementById('loginForm');
-  const loginMessageDiv = loginForm ? loginForm.querySelector('#message') : null;
-
-  if (loginForm) {
-      loginForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-
-          const phoneNumber = document.getElementById('phoneNumber').value;
-          const password = document.getElementById('password').value;
-
-          try {
-              // 🚨 هنا تم تحديث المسار ليشير إلى Vercel Serverless Function
-              const response = await fetch(`${backendBaseUrl}/api/login`, {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                      phone_number: phoneNumber,
-                      password: password
-                  })
-              });
-
-              const data = await response.json();
-
-              if (response.ok) {
-                  loginMessageDiv.textContent = data.message;
-                  loginMessageDiv.style.color = 'green';
-                  localStorage.setItem('userToken', data.token); // حفظ الرمز
-                  localStorage.setItem('userName', data.user.first_name); // حفظ الاسم
-                  setTimeout(() => {
-                      window.location.href = 'home.html'; // التوجيه للصفحة الرئيسية
-                  }, 1000);
-              } else {
-                  loginMessageDiv.textContent = data.message || 'حدث خطأ غير معروف أثناء تسجيل الدخول.';
-                  loginMessageDiv.style.color = 'red';
-              }
-          } catch (error) {
-              console.error('Error during login:', error);
-              loginMessageDiv.textContent = 'فشل الاتصال بالخادم. الرجاء التأكد من تشغيله.';
-              loginMessageDiv.style.color = 'red';
-          }
-      });
-  }
-
-  // 3. وظيفة تسجيل الخروج
-  function logout() {
-      localStorage.removeItem('userToken');
-      localStorage.removeItem('userName');
-      window.location.href = 'index.html'; // التوجيه لصفحة تسجيل الدخول
-  }
-
-  // 4. التحقق من المصادقة عند تحميل الصفحات المحمية
-  async function checkAuthentication() {
-      const token = localStorage.getItem('userToken');
-      if (!token) {
-          // إذا لم يكن هناك توكن، أعد التوجيه لصفحة تسجيل الدخول
-          window.location.href = 'index.html';
-          return false;
-      }
-
-      try {
-          // 🚨 هنا تم تحديث المسار ليشير إلى Vercel Serverless Function
-          const response = await fetch(`${backendBaseUrl}/api/protected`, {
-              method: 'GET',
-              headers: {
-                  'Authorization': `Bearer ${token}`
-              }
-          });
-
-          if (!response.ok) {
-              // إذا كان التوكن غير صالح أو منتهي الصلاحية، قم بتسجيل الخروج
-              logout();
-              return false;
-          }
-          // إذا كان التوكن صالحاً، لا تفعل شيئاً أو يمكنك عرض رسالة ترحيب
-          return true;
-
-      } catch (error) {
-          console.error('Error checking authentication:', error);
-          logout(); // في حالة وجود خطأ بالاتصال، قم بتسجيل الخروج
-          return false;
-      }
-  }
-
-  // تشغيل التحقق عند تحميل الصفحات المحمية
-  const currentPath = window.location.pathname;
-  const protectedPages = ['/main-page.html', '/home.html']; // قائمة بالصفحات التي تتطلب مصادقة
-
-  if (protectedPages.some(page => currentPath.endsWith(page))) {
-      checkAuthentication(); // تحقق من المصادقة أولاً
-
-      // تحديث أزرار تسجيل الدخول/الخروج في main-page.html
-      const authButton = document.getElementById('authButton');
-      const registerButton = document.querySelector('.top-btn.register-btn'); // زر "أنشئ حسابك"
-
-      if (authButton) { // هذا الجزء خاص بـ main-page.html
-          const token = localStorage.getItem('userToken');
-          if (token) {
-              authButton.classList.remove('login-btn');
-              authButton.classList.add('logout-btn');
-              authButton.innerHTML = '<span class="btn-icon">🚪</span> تسجيل الخروج';
-              authButton.onclick = logout; // استدعاء دالة تسجيل الخروج
-              if (registerButton) {
-                  registerButton.style.display = 'none'; // إخفاء زر التسجيل إذا كان المستخدم مسجلاً دخوله
-              }
-          } else {
-              authButton.classList.add('login-btn');
-              authButton.classList.remove('logout-btn');
-              authButton.innerHTML = '<span class="btn-icon">➡️</span> سجّل دخولك';
-              authButton.onclick = () => { location.href = 'index.html'; }; // التوجيه لـ login.html
-              if (registerButton) {
-                  registerButton.style.display = ''; // إظهار زر التسجيل
-              }
-          }
-      }
-  }
-
-  // تحديث الاسم في صفحة home.html
-  const userNameDisplay = document.getElementById('userNameDisplay');
-  if (userNameDisplay) {
-      const userName = localStorage.getItem('userName');
-      if (userName) {
-          userNameDisplay.textContent = `أهلاً بك, ${userName}!`;
-      } else {
-          // في حال عدم وجود اسم، أعد التوجيه لصفحة تسجيل الدخول
-          window.location.href = 'index.html';
-      }
-  }
-
+    if (authButton) { // هذا الجزء خاص بـ index.html (صفحة الهبوط)
+        const token = localStorage.getItem('userToken');
+        if (token) {
+            authButton.classList.remove('login-btn');
+            authButton.classList.add('logout-btn');
+            authButton.innerHTML = '<span class="btn-icon">🚪</span> تسجيل الخروج';
+            authButton.onclick = logout; // استدعاء دالة تسجيل الخروج
+            if (registerButton) {
+                registerButton.style.display = 'none'; // إخفاء زر التسجيل إذا كان المستخدم مسجلاً دخوله
+            }
+        } else {
+            authButton.classList.add('login-btn');
+            authButton.classList.remove('logout-btn');
+            authButton.innerHTML = '<span class="btn-icon">➡️</span> سجّل دخولك';
+            authButton.onclick = () => { location.href = 'login.html'; }; // التوجيه لـ login.html
+            if (registerButton) {
+                registerButton.style.display = ''; // إظهار زر التسجيل
+            }
+        }
+    }
 }); // نهاية DOMContentLoaded

@@ -12,7 +12,10 @@ const PORT = process.env.PORT || 5000; // قراءة المنفذ من متغي�
 const JWT_SECRET = process.env.JWT_SECRET; // قراءة مفتاح JWT السري
 
 // تهيئة مجلد 'public' لتقديم الملفات الثابتة (الواجهة الأمامية)
-app.use(express.static('public'));
+// في Vercel، لا تحتاج لـ `app.use(express.static('public'));` داخل serverless function
+// لأن Vercel يتعامل مع ملفات `public` بشكل منفصل.
+// ولكن إذا كنت تختبر محلياً كـ Node.js app، فستحتاجها.
+// لأغراض Vercel serverless function، هذا الجزء سيتم إزالته أو تجاهله.
 
 // 3. Middlewares (برامج وسيطة)
 app.use(cors()); // تفعيل CORS للسماح بالطلبات من نطاقات مختلفة
@@ -21,61 +24,38 @@ app.use(express.json()); // تفعيل تحليل طلبات JSON (لاستقب�
 // 4. تكوين اتصال قاعدة البيانات PostgreSQL
 const pool = new Pool({
     user: process.env.DB_USER,        // اسم المستخدم لقاعدة بيانات Supabase (غالباً postgres)
-    host: process.env.DB_HOST,        // اسم المضيف من Connection String في Supabase
-    database: process.env.DB_DATABASE,    // اسم قاعدة البيانات (غالباً postgres)
-    password: process.env.DB_PASSWORD,    // كلمة المرور القوية التي أنشأتها لـ Supabase
-    port: process.env.DB_PORT,        // المنفذ (غالباً 6543 لـ pooler في Supabase، أو 5432)
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
     ssl: {
-        rejectUnauthorized: false // هام جداً للاتصال بـ Supabase عبر SSL
+        rejectUnauthorized: false // هام لـ Supabase لتجاوز خطأ الشهادة
     }
-});
-
-// اختبار الاتصال بقاعدة البيانات عند بدء تشغيل السيرفر
-pool.connect((err, client, release) => {
-    if (err) {
-        return console.error('Error acquiring client', err.stack);
-    }
-    client.query('SELECT NOW()', (err, result) => {
-        release(); // release the client back to the pool
-        if (err) {
-            return console.error('Error executing query', err.stack);
-        }
-        console.log('Database connected at:', result.rows[0].now);
-    });
 });
 
 // 5. مسار تسجيل المستخدمين الجدد
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
+    const { first_name, last_name, phone_number, parent_phone_number, governorate, grade, password } = req.body;
+
+    // 1. التحقق من صحة البيانات المدخلة
+    if (!first_name || !last_name || !phone_number || !parent_phone_number || !governorate || !grade || !password) {
+        return res.status(400).json({ message: 'الرجاء إدخال جميع الحقول المطلوبة.' });
+    }
+
+    // 2. التحقق من طول كلمة المرور (على الأقل 6 أحرف)
+    if (password.length < 6) {
+        return res.status(400).json({ message: 'يجب أن تكون كلمة المرور 6 أحرف على الأقل.' });
+    }
+
     try {
-        const {
-            first_name,
-            last_name,
-            phone_number,
-            parent_phone_number,
-            governorate,
-            grade,
-            password,
-            confirm_password
-        } = req.body;
-
-        // 1. التحقق من تطابق كلمات المرور
-        if (password !== confirm_password) {
-            return res.status(400).json({ message: 'كلمة المرور وتأكيد كلمة المرور غير متطابقين.' });
-        }
-
-        // 2. التحقق من قوة كلمة المرور (يمكنك إضافة منطق أكثر تعقيداً هنا)
-        if (password.length < 6) {
-            return res.status(400).json({ message: 'يجب أن تكون كلمة المرور 6 أحرف على الأقل.' });
-        }
-
-        // 3. التحقق مما إذا كان رقم الهاتف موجوداً بالفعل
+        // 3. التحقق مما إذا كان رقم الهاتف مسجلاً بالفعل
         const existingUser = await pool.query('SELECT * FROM users WHERE phone_number = $1', [phone_number]);
         if (existingUser.rows.length > 0) {
             return res.status(409).json({ message: 'رقم الهاتف هذا مسجل بالفعل. الرجاء تسجيل الدخول أو استخدام رقم آخر.' });
         }
 
         // 4. تشفير كلمة المرور
-        const salt = await bcrypt.genSalt(10); // saltRounds (عدد جولات التشفير) كلما زاد الرقم، زاد الأمان، ولكن زاد الوقت المستغرق
+        const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // 5. حفظ المستخدم الجديد في قاعدة البيانات
@@ -97,32 +77,39 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// 6. مسار تسجيل الدخول
-app.post('/login', async (req, res) => {
+// 6. مسار تسجيل الدخول للمستخدمين
+app.post('/api/login', async (req, res) => {
+    const { phone_number, password } = req.body;
+
+    // 1. التحقق من وجود البيانات
+    if (!phone_number || !password) {
+        return res.status(400).json({ message: 'الرجاء إدخال رقم الهاتف وكلمة المرور.' });
+    }
+
     try {
-        const { phone_number, password } = req.body;
+        // 2. البحث عن المستخدم في قاعدة البيانات
+        const result = await pool.query('SELECT * FROM users WHERE phone_number = $1', [phone_number]);
+        const foundUser = result.rows[0];
 
-        // 1. البحث عن المستخدم برقم الهاتف
-        const user = await pool.query('SELECT * FROM users WHERE phone_number = $1', [phone_number]);
-        if (user.rows.length === 0) {
-            return res.status(400).json({ message: 'رقم الهاتف أو كلمة المرور غير صحيحة.' });
+        if (!foundUser) {
+            return res.status(401).json({ message: 'رقم الهاتف أو كلمة المرور غير صحيحة.' });
         }
 
-        const foundUser = user.rows[0];
-
-        // 2. مقارنة كلمة المرور المشفرة
+        // 3. مقارنة كلمة المرور المدخلة بكلمة المرور المشفرة
         const isMatch = await bcrypt.compare(password, foundUser.password);
+
         if (!isMatch) {
-            return res.status(400).json({ message: 'رقم الهاتف أو كلمة المرور غير صحيحة.' });
+            return res.status(401).json({ message: 'رقم الهاتف أو كلمة المرور غير صحيحة.' });
         }
 
-        // 3. إنشاء رمز JWT
+        // 4. إنشاء رمز JWT (JSON Web Token)
         const token = jwt.sign(
             { id: foundUser.id, phone_number: foundUser.phone_number },
-            JWT_SECRET, { expiresIn: '1h' } // الرمز صالح لمدة ساعة واحدة
+            JWT_SECRET,
+            { expiresIn: '1h' } // انتهاء صلاحية الرمز بعد ساعة واحدة
         );
 
-        // 4. إرسال الرمز كاستجابة
+        // 5. إرسال الرمز ومعلومات المستخدم
         res.status(200).json({
             message: 'تم تسجيل الدخول بنجاح!',
             token: token,
@@ -141,7 +128,7 @@ app.post('/login', async (req, res) => {
 });
 
 // 7. مسار محمي (يتطلب مصادقة JWT) - مثال
-app.get('/protected', async (req, res) => {
+app.get('/api/protected', async (req, res) => {
     try {
         // التحقق من وجود الرمز في رأس الطلب (Authorization header)
         const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -159,13 +146,9 @@ app.get('/protected', async (req, res) => {
 
     } catch (error) {
         console.error('Authentication error:', error.message);
-        res.status(401).json({ message: 'رمز مصادقة غير صالح أو منتهي الصلاحية.' });
+        res.status(401).json({ message: 'الرمز غير صالح أو منتهي الصلاحية.' });
     }
 });
 
-
-// 8. تشغيل الخادم
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Backend URL: http://localhost:${PORT}`);
-});
+// تصدير تطبيق Express كـ Serverless Function
+module.exports = app;
