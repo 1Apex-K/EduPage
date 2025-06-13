@@ -26,7 +26,7 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,    // كلمة المرور القوية التي أنشأتها لـ Supabase
     port: process.env.DB_PORT,        // المنفذ (غالباً 6543 لـ pooler في Supabase، أو 5432)
     ssl: {
-        rejectUnauthorized: false // هام جداً للاتصال بـ Supabase عبر SSL
+        rejectUnauthorized: true // تفعيل التحقق من شهادة SSL للاتصال الآمن
     }
 });
 
