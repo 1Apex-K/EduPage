@@ -1,0 +1,460 @@
+/* الخطوط الأساسية */
+body {
+  font-family: 'Cairo', sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.6s ease, color 0.6s ease;
+  overflow-x: hidden; /* للسماح بالتمرير الرأسي وإخفاء الأفقي فقط */
+  direction: rtl; /* اتجاه الكتابة من اليمين لليسار للصفحة بالكامل */
+}
+
+/* الوضع النهاري */
+body.light {
+  background-color: #ffffff;
+  color: #111111;
+}
+
+/* الوضع الليلي */
+body.dark {
+  background-color: #0d0d0d;
+  color: #ffdd00; /* لون الخط الأساسي في الوضع الليلي */
+}
+
+/* الخلفية العامة المتحركة (الحروف العربية) التي تغطي كل الشاشات */
+#particles-background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -2; /* لضمان أنها في الخلفية تمامًا */
+  background-color: transparent; /* الخلفية الفعلية سيحددها الـ body */
+}
+
+/* زر تبديل الثيم */
+.theme-toggle {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  cursor: pointer;
+  font-size: 2.5rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  transition: transform 0.3s ease-out;
+}
+
+.theme-toggle:active {
+  transform: scale(0.8) rotate(360deg);
+}
+
+/* --------------------------------------------------- */
+/* تنسيقات صفحات تسجيل الدخول (index, register, forgot-password) */
+/* --------------------------------------------------- */
+.login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: background 0.6s ease, box-shadow 0.6s ease;
+  position: relative;
+  z-index: 1; /* لضمان ظهورها فوق الخلفية المتحركة */
+}
+
+.login-container h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: inherit;
+}
+
+/* الحقول (input, select) */
+input, select {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 12px 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: inherit;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(4px);
+  box-sizing: border-box;
+  font-family: 'Cairo', sans-serif;
+  text-align: right;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #ffdd00;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+body.dark input, body.dark select {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffdd00;
+}
+
+body.dark input:focus, body.dark select:focus {
+  border-color: #ffdd00;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* زر الدخول/إنشاء الحساب */
+button {
+  width: 100%;
+  padding: 14px;
+  background-color: #ffdd00;
+  color: #111;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.4s ease;
+  font-family: 'Cairo', sans-serif;
+}
+
+button:hover {
+  background-color: #e6c800;
+}
+
+/* مجموعة الإدخال (مع الليبل المتحرك) */
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  padding: 14px 12px 14px 12px;
+}
+
+.input-group label {
+  position: absolute;
+  top: 14px;
+  right: 12px;
+  font-size: 16px;
+  color: #aaa;
+  pointer-events: none;
+  transition: 0.3s ease;
+  font-family: 'Cairo', sans-serif;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown):valid + label {
+  top: -10px;
+  right: 8px;
+  font-size: 13px;
+  color: #ffdd00;
+  background-color: transparent;
+}
+
+/* الروابط داخل login-container */
+.login-container p {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: inherit;
+}
+
+.login-container p a {
+  color: #88ccff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-container p a:hover {
+  color: #66b3ff;
+  text-decoration: underline;
+}
+
+body.dark .login-container p a {
+  color: #88ccff;
+}
+
+body.dark .login-container p a:hover {
+  color: #66b3ff;
+}
+
+/* --------------------------------------------------- */
+/* تنسيقات الصفحة الرئيسية الجديدة (main-page.html) */
+/* --------------------------------------------------- */
+.main-page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  position: relative;
+  z-index: 0;
+}
+
+/* الجزء الأيسر للمحتوى */
+.content-left {
+  flex: 1;
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: right;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.6s ease, color 0.6s ease;
+  z-index: 1;
+}
+
+body.dark .content-left {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.content-left .header-section {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.content-left .header-logo {
+  max-width: 180px;
+  height: auto;
+  filter: brightness(1.2);
+}
+
+body.dark .content-left .header-logo {
+  filter: brightness(0.8) invert(1) saturate(1.5);
+}
+
+.content-left .top-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.content-left .top-btn {
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-left .top-btn.login-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+.content-left .top-btn.login-btn:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.content-left .top-btn.register-btn {
+  background-color: #ff5252;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(255, 82, 82, 0.4);
+}
+.content-left .top-btn.register-btn:hover {
+  background-color: #e04040;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 82, 82, 0.6);
+}
+
+.content-left .btn-icon {
+  font-size: 1.2em;
+}
+
+.content-left .hero-section {
+  text-align: right;
+  margin-bottom: auto;
+}
+
+.content-left .hero-title {
+  font-size: 4rem;
+  color: inherit;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.content-left .hero-subtitle {
+  font-size: 2.2rem;
+  color: inherit;
+  margin-bottom: 3rem;
+  opacity: 0.9;
+}
+
+/* تنسيقات النص المتحرك (Typing Effect) */
+.hero-section .dynamic-text {
+  border-right: 2px solid; /* مؤشر الكتابة (الكيرسير) */
+  animation: blink-caret 0.75s step-end infinite; /* انيميشن وميض المؤشر */
+  display: inline-block; /* لضمان ظهور المؤشر بشكل صحيح */
+}
+
+/* انيميشن وميض مؤشر الكتابة */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: inherit; } /* المؤشر يرث لون النص */
+}
+
+
+.content-left .action-btn {
+  width: auto;
+  padding: 18px 40px;
+  background-color: #00e676;
+  color: #fff;
+  border-radius: 50px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 230, 118, 0.4);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content-left .action-btn:hover {
+  background-color: #00c853;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 230, 118, 0.6);
+}
+
+.content-left .footer-info {
+  margin-top: auto;
+  color: inherit;
+  font-size: 0.95rem;
+  opacity: 0.7;
+  text-align: right;
+  width: 100%;
+  padding-top: 2rem;
+}
+
+/* --------------------------------------------------- */
+/* الجزء الأيمن لمنطقة الانيميشن */
+/* --------------------------------------------------- */
+.animation-right {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(to bottom right, #ffdd00, #ff8c00);
+  border-radius: 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+body.dark .animation-right {
+  background-image: linear-gradient(to bottom right, #ff8c00, #ffdd00);
+}
+
+/* حاوية الطائرة المتحركة */
+#plane-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+/* نص "الأسطورة" كـ overlay */
+.side-overlay-text {
+  position: absolute;
+  font-size: 9rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.1);
+  z-index: 2;
+  user-select: none;
+  white-space: nowrap;
+  transform: rotate(-10deg);
+  right: 10%;
+  top: 45%;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .side-overlay-text {
+  color: rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------- */
+/* تنسيقات صفحات home.html (إذا كنت تريد الاحتفاظ بها) */
+/* --------------------------------------------------- */
+.home-container {
+  max-width: 600px;
+  margin: 100px auto;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: background 0.6s ease, box-shadow 0.6s ease;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.home-container h1 {
+  font-size: 2.2rem;
+  color: inherit;
+  margin-bottom: 1.5rem;
+}
+
+.home-container p {
+  font-size: 1.1rem;
+  color: inherit;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.home-container .welcome-img {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 2.5rem;
+  opacity: 0.9;
+  transition: opacity 0.5s ease;
+}
+
+.logout-btn {
+  width: 80%;
+  padding: 14px;
+  background-color: #ffdd00;
+  color: #111;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.4s ease;
+  font-family: 'Cairo', sans-serif;
+  text-decoration: none;
+  display: block;
+  margin-top: auto;
+}
+
+.logout-btn:hover {
+  background-color: #e6c800;
+}
+
+body.dark .home-container h1,
+body.dark .home-container p {
+  color: #ffdd00;
+}
+
+body.dark .home-container .welcome-img {
+  filter: brightness(0.8) contrast(1.2);
+}

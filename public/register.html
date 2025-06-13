@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل حساب جديد</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="particles-background"></div>
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <span id="theme-icon">😴</span>
+  </div>
+
+  <div class="login-container">
+    <h1>إنشاء حساب جديد</h1>
+    <form id="registerForm" method="post">
+      <div class="input-group">
+        <input type="text" id="firstName" name="first_name" required />
+        <label>الاسم الأول</label>
+      </div>
+      <div class="input-group">
+        <input type="text" id="lastName" name="last_name" required />
+        <label>الاسم الأخير</label>
+      </div>
+      <div class="input-group">
+        <input type="text" id="phoneNumber" name="phone_number" required />
+        <label>رقم الهاتف</label>
+      </div>
+      <div class="input-group">
+        <input type="text" id="parentPhoneNumber" name="parent_phone_number" required />
+        <label>رقم هاتف ولي الأمر</label>
+      </div>
+      <div class="input-group">
+        <select id="governorate" name="governorate" required>
+          <option value="">اختر المحافظة</option>
+          <option value="القاهرة">القاهرة</option>
+          <option value="الجيزة">الجيزة</option>
+          </select>
+      </div>
+      <div class="input-group">
+        <select id="grade" name="grade" required>
+          <option value="">اختر الصف الدراسي</option>
+          <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+          <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+          </select>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" name="password" required />
+        <label>كلمة السر</label>
+      </div>
+      <div class="input-group">
+        <input type="password" id="confirmPassword" name="confirm_password" required />
+        <label>تأكيد كلمة السر</label>
+      </div>
+
+      <button type="submit">إنشاء حساب</button>
+      <div id="message" class="message"></div>
+      <p>لديك حساب بالفعل؟ <a href="login.html">سجّل دخولك</a></p>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/basic@latest/tsparticles.basic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@latest/tsparticles.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

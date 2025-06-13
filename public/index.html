@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>منصة الأسطورة التعليمية</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="particles-background"></div>
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <span id="theme-icon">😴</span>
+  </div>
+
+  <div class="main-page-wrapper landing-page">
+    <div class="content-left">
+      <div class="header-section">
+        <img src="https://via.placeholder.com/150x50/FFDDC0/0D0D0D?text=THE+LEGEND" alt="The Legend Logo" class="header-logo" />
+        <div class="top-buttons">
+          <button class="top-btn login-btn" onclick="location.href='login.html'">
+            <span class="btn-icon">➡️</span> سجّل دخولك
+          </button>
+          <button class="top-btn register-btn" onclick="location.href='register.html'">
+            <span class="btn-icon">✨</span> أنشئ حسابك
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-section">
+        <h2 class="hero-title">مرحبًا بك في <span class="highlight">منصة الأسطورة التعليمية</span></h2>
+        <h3 class="hero-subtitle">حيث يبدأ طريقك نحو التميز!</h3>
+        <p class="hero-description">نقدم لك أفضل الشروحات، المراجعات، والتدريبات لمساعدتك على التفوق.</p>
+        <button class="action-btn" onclick="location.href='register.html'">ابدأ رحلتك التعليمية الآن!</button>
+      </div>
+
+      <div class="features-section">
+        <div class="feature-card">
+          <span class="feature-icon">📚</span>
+          <h3>محتوى تعليمي شامل</h3>
+          <p>شروحات مفصلة، أسئلة، ومراجعات لكل المواد.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">👨‍🏫</span>
+          <h3>معلمون خبراء</h3>
+          <p>نخبة من أفضل المعلمين لضمان فهمك الكامل.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">✨</span>
+          <h3>تجربة تعلم ممتعة</h3>
+          <p>دروس تفاعلية وأنشطة شيقة تجعل التعلم ممتعًا.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-right">
+      <div id="plane-particles"></div>
+      <img src="https://via.placeholder.com/300x500/000000/FFFFFF?text=Character" alt="Character" class="character-img" />
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/basic@latest/tsparticles.basic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@latest/tsparticles.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول إلى الأسطورة</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="particles-background"></div>
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <span id="theme-icon">😴</span>
+  </div>
+
+  <div class="login-container">
+    <h1>تسجيل الدخول</h1>
+    <form id="loginForm" method="post">
+      <div class="input-group">
+        <input type="text" id="phoneNumber" name="phone_number" required />
+        <label>رقم الهاتف</label>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="password" name="password" required />
+        <label>كلمة المرور</label>
+      </div>
+
+      <button type="submit">دخول</button>
+      <div id="message" class="message"></div>
+      <p>نسيت كلمة المرور؟ <a href="forgot-password.html">اضغط هنا</a></p>
+      <p>ليس لديك حساب؟ <a href="register.html">أنشئ حساباً جديداً</a></p>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/basic@latest/tsparticles.basic.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@latest/tsparticles.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
