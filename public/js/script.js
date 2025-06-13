@@ -1,9 +1,10 @@
-// script.js
+// public/js/script.js
 
-// 🚨 هام جداً: قم بتغيير هذا الرابط إلى رابط الـ Backend الخاص بك بعد نشره على Railway/Cyclic
-// ستجد هذا الرابط في لوحة تحكم Railway بعد نجاح النشر.
-// مثال: 'https://your-app-name.up.railway.app'
-const backendBaseUrl = 'http://localhost:5000'; // استخدم هذا مؤقتاً للتطوير المحلي
+// 🚨 هام جداً: هذا الرابط سيتم تحديثه تلقائياً بواسطة Vercel/Netlify.
+// عند التطوير المحلي، يمكنك استخدام '/api' إذا كنت تستخدم Vercel Dev.
+// عند النشر، سيكون مسار الـ API هو '/api/'.
+const backendBaseUrl = ''; // اتركه فارغاً عند النشر، Vercel ستقوم بتوجيه الطلبات لـ /api تلقائياً.
+                           // لو محلياً، يمكن أن يكون 'http://localhost:3000' لو بتستخدم vercel dev أو 'http://localhost:5000' لو شغلت server.js لوحده.
 
 // الوظائف المتعلقة بتغيير الثيم (الوضع الليلي/النهاري)
 function setTheme(mode) {
@@ -287,7 +288,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const confirmPassword = document.getElementById('confirmPassword').value;
 
           try {
-              const response = await fetch(`${backendBaseUrl}/register`, {
+              // 🚨 هنا تم تحديث المسار ليشير إلى Vercel Serverless Function
+              const response = await fetch(`${backendBaseUrl}/api/register`, {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json'
@@ -337,7 +339,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const password = document.getElementById('password').value;
 
           try {
-              const response = await fetch(`${backendBaseUrl}/login`, {
+              // 🚨 هنا تم تحديث المسار ليشير إلى Vercel Serverless Function
+              const response = await fetch(`${backendBaseUrl}/api/login`, {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json'
@@ -387,8 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-          // محاولة التحقق من التوكن مع الخادم
-          const response = await fetch(`${backendBaseUrl}/protected`, {
+          // 🚨 هنا تم تحديث المسار ليشير إلى Vercel Serverless Function
+          const response = await fetch(`${backendBaseUrl}/api/protected`, {
               method: 'GET',
               headers: {
                   'Authorization': `Bearer ${token}`
